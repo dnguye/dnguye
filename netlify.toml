@@ -1,0 +1,13 @@
+# Netlify deployment for Agentic Workspace (Next.js App Router).
+# The Next.js runtime plugin handles SSR/API routes automatically.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Scheduled function that ticks the routine scheduler (see
+# netlify/functions/routine-tick.mjs). Requires CRON_SECRET and
+# SUPABASE_SERVICE_ROLE_KEY in the site's environment variables.
