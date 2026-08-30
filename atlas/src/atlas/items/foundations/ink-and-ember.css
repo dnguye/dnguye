@@ -1,0 +1,34 @@
+/* Ink & Ember: warm paper and near-black with a burnt-orange accent.
+   Tailwind v4 theme tokens. Import after tailwindcss in globals.css;
+   toggle dark mode by putting the .dark class on <html>. */
+
+:root {
+  --canvas: #f6f4ef;
+  --surface: #fdfcfa;
+  --line: #e3dfd6;
+  --ink: #211f1b;
+  --muted: #6f6a61;
+  --accent: #b8542e;
+  --on-accent: #fdfcfa;
+}
+
+.dark {
+  --canvas: #121110;
+  --surface: #1a1815;
+  --line: #2a2724;
+  --ink: #ece7dd;
+  --muted: #8f897d;
+  --accent: #d4683f;
+  --on-accent: #121110;
+}
+
+/* Exposes bg-canvas, text-ink, border-line, bg-accent, … as utilities. */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+}

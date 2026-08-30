@@ -1,0 +1,13 @@
+/* Radius scale — one base value, everything else derived.
+   Change --radius once to re-round the whole product. */
+
+:root {
+  --radius: 8px;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px); /* chips, kbd */
+  --radius-md: calc(var(--radius) - 2px); /* buttons, inputs */
+  --radius-lg: var(--radius);             /* cards, code blocks */
+  --radius-xl: calc(var(--radius) + 4px); /* dialogs, stages */
+}

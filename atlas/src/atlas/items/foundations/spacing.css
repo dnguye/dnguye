@@ -1,0 +1,12 @@
+/* Spacing rhythm — a 4px base with a deliberately small set of steps.
+   The rule of thumb encoded below:
+     4, 8      inside controls (padding)
+     12, 16    between sibling elements
+     24, 32    between groups
+     48, 64    between page sections
+   Tailwind's default 4px scale already provides these as p-1 … p-16;
+   the discipline is using ONLY these eight steps. */
+
+@theme {
+  --spacing: 0.25rem; /* 4px base — p-1 = 4px, p-2 = 8px, … */
+}

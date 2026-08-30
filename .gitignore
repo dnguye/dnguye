@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# atlas standalone app
+/atlas/node_modules
+/atlas/.next
+/atlas/out

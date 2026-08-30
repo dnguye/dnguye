@@ -1,0 +1,34 @@
+/* Porcelain: cool, quiet neutrals with an indigo accent.
+   Tailwind v4 theme tokens. Import after tailwindcss in globals.css;
+   toggle dark mode by putting the .dark class on <html>. */
+
+:root {
+  --canvas: #f7f7f8;
+  --surface: #ffffff;
+  --line: #e4e5e9;
+  --ink: #1b1d21;
+  --muted: #686c75;
+  --accent: #4753c6;
+  --on-accent: #ffffff;
+}
+
+.dark {
+  --canvas: #17181c;
+  --surface: #1e2025;
+  --line: #2b2e35;
+  --ink: #e7e8eb;
+  --muted: #9297a1;
+  --accent: #8b96f8;
+  --on-accent: #14151a;
+}
+
+/* Exposes bg-canvas, text-ink, border-line, bg-accent, … as utilities. */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+}

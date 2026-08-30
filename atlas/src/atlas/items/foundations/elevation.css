@@ -1,0 +1,12 @@
+/* Elevation ramp — four steps are enough for a whole product.
+   Dark mode: shadows read weaker on dark surfaces, so pair each step
+   with a slightly lighter surface color instead of a bigger shadow. */
+
+@theme {
+  --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.06);
+  --shadow-card: 0 1px 3px rgb(0 0 0 / 0.08), 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-overlay: 0 8px 24px rgb(0 0 0 / 0.14);
+  --shadow-modal: 0 24px 64px rgb(0 0 0 / 0.24);
+}
+
+/* Usage: shadow-raised · shadow-card · shadow-overlay · shadow-modal */

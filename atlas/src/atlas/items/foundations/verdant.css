@@ -1,0 +1,34 @@
+/* Verdant: green-tinted neutrals with a forest accent.
+   Tailwind v4 theme tokens. Import after tailwindcss in globals.css;
+   toggle dark mode by putting the .dark class on <html>. */
+
+:root {
+  --canvas: #f4f6f2;
+  --surface: #fcfdfb;
+  --line: #dfe5db;
+  --ink: #1d231c;
+  --muted: #66705f;
+  --accent: #38714a;
+  --on-accent: #fcfdfb;
+}
+
+.dark {
+  --canvas: #131713;
+  --surface: #1a1f19;
+  --line: #293028;
+  --ink: #e4e9e1;
+  --muted: #8d968a;
+  --accent: #7fb08d;
+  --on-accent: #131713;
+}
+
+/* Exposes bg-canvas, text-ink, border-line, bg-accent, … as utilities. */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+}

@@ -1,0 +1,9 @@
+# Netlify deployment for Atlas (standalone Next.js app in /atlas).
+# Create a separate Netlify site with "Base directory" set to `atlas`.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
