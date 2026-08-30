@@ -15,7 +15,7 @@ export type CodeFile = {
   lines: number;
 };
 
-const COLLAPSE_AT = 24;
+const COLLAPSE_AT = 12;
 
 export function CodeBox({ files }: { files: CodeFile[] }) {
   const [active, setActive] = useState(0);
@@ -71,7 +71,7 @@ export function CodeBox({ files }: { files: CodeFile[] }) {
         className={cn(
           "code-numbers overflow-x-auto bg-surface py-4 font-mono text-xs leading-[1.75]",
           wrap && "code-wrap",
-          collapsible && !expanded && "max-h-[480px] overflow-y-hidden"
+          collapsible && !expanded && "max-h-[240px] overflow-y-hidden"
         )}
         // Server-highlighted by Shiki from our own registry sources.
         dangerouslySetInnerHTML={{ __html: file.html }}

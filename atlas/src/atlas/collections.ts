@@ -19,8 +19,8 @@ export const collections: CollectionMeta[] = [
     id: "ui",
     index: "03",
     name: "UI",
-    tagline: "The everyday components, drawn carefully: buttons, inputs, cards, navigation.",
-    groups: ["Buttons", "Inputs", "Cards", "Navigation", "Feedback"],
+    tagline: "The everyday components, drawn carefully — from buttons and dialogs to tables and toasts.",
+    groups: ["Buttons", "Inputs", "Selection", "Overlays", "Cards", "Data", "Navigation", "Feedback"],
   },
   {
     id: "sections",

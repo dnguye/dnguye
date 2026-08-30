@@ -24,7 +24,7 @@ export function HandoffBox({ text }: { text: string }) {
         </div>
         <CopyButton text={text} label="Copy prompt" variant="accent" />
       </div>
-      <pre className="max-h-[480px] overflow-auto bg-surface px-5 py-4 font-mono text-[11.5px] leading-[1.8] whitespace-pre-wrap text-muted [&_br]:hidden">
+      <pre className="max-h-[240px] overflow-auto bg-surface px-5 py-4 font-mono text-[11.5px] leading-[1.8] whitespace-pre-wrap text-muted [&_br]:hidden">
         {text}
       </pre>
       <div className="border-t border-accent/35 bg-accent/[0.06] px-4 py-2 font-mono text-[10px] tracking-[0.06em] text-faint uppercase">
