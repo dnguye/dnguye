@@ -10,8 +10,8 @@ function Shell({ fullBleed, children }: { fullBleed?: boolean; children: React.R
   const theme = searchParams.get("theme") === "light" ? "light" : "dark";
   const bg = searchParams.get("bg") ?? "surface";
 
-  // The preview document owns its theme entirely — set it on <html> so the
-  // Tailwind `dark:` variant works exactly as it would in a consumer app.
+  // The blocking script in the preview layout already set the class before
+  // first paint; this keeps it in sync if the query changes client-side.
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
     document.documentElement.style.colorScheme = theme;
