@@ -66,6 +66,16 @@ export function Stage({
   const dragState = useRef<{ startX: number; startWidth: number } | null>(null);
 
   const src = (t: "light" | "dark") => `${previewPath}?theme=${t}&bg=${bg}`;
+  // While an iframe (re)loads it paints its own background; match the theme
+  // so a replay never flashes white in dark mode.
+  const frameBg = (t: "light" | "dark") =>
+    t === "dark"
+      ? bg === "canvas"
+        ? "#121110"
+        : "#1a1815"
+      : bg === "canvas"
+        ? "#f6f4ef"
+        : "#fdfcfa";
 
   function beginDrag(e: React.PointerEvent<HTMLButtonElement>) {
     const current = frameRef.current?.offsetWidth ?? 0;
@@ -164,7 +174,7 @@ export function Stage({
               title={`Preview (${t})`}
               src={src(t)}
               className="block w-full"
-              style={{ height: `${height}px`, colorScheme: t }}
+              style={{ height: `${height}px`, colorScheme: t, backgroundColor: frameBg(t) }}
               loading="lazy"
             />
           ))}

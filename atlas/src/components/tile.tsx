@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import type { Item } from "@/atlas/types";
-import { cn } from "@/lib/cn";
+import { TileStage } from "./tile-stage";
 
 /**
  * Collection-grid tile: the real Preview component rendered inline (cheap —
@@ -12,6 +12,7 @@ import { cn } from "@/lib/cn";
 export function Tile({ item, refId }: { item: Item; refId: string }) {
   const fullBleed = item.stage?.fullBleed;
   const Visual = item.Thumb ?? item.Preview;
+
   return (
     <div className="group relative flex flex-col bg-canvas transition-colors hover:bg-surface">
       <Link
@@ -19,16 +20,7 @@ export function Tile({ item, refId }: { item: Item; refId: string }) {
         className="absolute inset-0 z-10"
         aria-label={`${item.name} (${refId})`}
       />
-      <div
-        className={cn(
-          "pointer-events-none relative isolate h-[180px] overflow-hidden bg-surface",
-          !fullBleed && "flex items-center justify-center p-6"
-        )}
-        style={{ containerType: "inline-size" }}
-        aria-hidden="true"
-        // Demos are interactive; inside a tile they are decoration only.
-        inert
-      >
+      <TileStage className={fullBleed && !item.Thumb ? undefined : "flex items-center justify-center p-6"}>
         {fullBleed && !item.Thumb ? (
           <div className="absolute top-0 left-0 h-[400%] w-[400%] origin-top-left scale-25">
             <Visual />
@@ -36,7 +28,7 @@ export function Tile({ item, refId }: { item: Item; refId: string }) {
         ) : (
           <Visual />
         )}
-      </div>
+      </TileStage>
       <div className="flex items-center justify-between border-t border-line px-4 py-3">
         <span className="text-[13px] font-medium transition-colors group-hover:text-accent">
           {item.name}
