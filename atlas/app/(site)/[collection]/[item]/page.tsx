@@ -98,7 +98,7 @@ export default async function ItemPage({ params }: PageProps<"/[collection]/[ite
       </div>
 
       {/* Stage */}
-      <Stage previewPath={`/preview/${item.collection}/${item.slug}`} height={item.stage?.height} />
+      <Stage previewPath={`/preview/${item.collection}/${item.slug}/`} height={item.stage?.height} />
 
       {/* Code + hand-off */}
       <div className="grid grid-cols-1 gap-8 px-6 py-8 sm:px-12 xl:grid-cols-2">

@@ -40,23 +40,25 @@ src/atlas/
 src/components/                 header, ⌘K palette, stage, code box, hand-off box
 ```
 
-Everything is statically generated (98 pages); `/preview/*` is excluded from
-robots.
+Everything is statically generated and exported as plain HTML/CSS/JS
+(`output: "export"` → `out/`); `/preview/*` is excluded from robots.
 
 ## Develop
 
 ```bash
 npm install
 npm run dev        # http://localhost:3100
-npm run build && npm run start
+npm run build      # static export to out/
 npm run lint && npm run typecheck
 ```
 
 ## Deploy
 
-This app is standalone. Point a separate Netlify site (base directory
-`atlas`) or Vercel project (root directory `atlas`) at the repo — configs for
-both are included. The root repo's own deployment is untouched.
+This app is standalone and fully static — `npm run build` writes plain
+HTML/CSS/JS to `out/`, so no server runtime or platform plugin is needed.
+Point a separate Netlify site (Base directory `atlas`, publish `out`) or
+Vercel project (Root Directory `atlas`) at the repo — configs for both are
+included. The root repo's own deployment is untouched.
 
 ## Adding an item
 
