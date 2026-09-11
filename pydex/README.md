@@ -19,9 +19,11 @@ step, no account.
 | AI and ML | scikit-learn, PyTorch, transformers, LangChain |
 | Cloud and integrations | boto3, google-cloud-*, Celery |
 
-42 libraries. Those that need a server, a GPU, cloud credentials or a real
-browser (aiohttp, psycopg, ruff, mypy, Playwright, PyTorch, transformers,
-LangChain, boto3, google-cloud, Celery) are copy-only; every other page runs.
+42 libraries, 531 snippets, 51 animated explainers. The eleven that need a
+server, a GPU, cloud credentials or a real browser (aiohttp, psycopg, ruff,
+mypy, Playwright, PyTorch, transformers, LangChain, boto3, google-cloud,
+Celery) are copy-only; every snippet on the other 31 pages runs in the
+browser and is checked by the test harness.
 
 Every library page has the same five parts: **Overview** (reach for it when /
 look elsewhere when), **Cheat sheet** (snippets with Run · Copy · Open in
@@ -77,6 +79,10 @@ from jsdelivr on first Run; to self-host them, set
   the last expression renders as an interactive chart.
 - `polars.scan_csv` is slow in the wasm build, so runnable snippets use
   `read_csv(...).lazy()` and say so.
+- `zoneinfo` has no time-zone database in Pyodide, so the `datetime` snippets
+  that use `ZoneInfo` load the `tzdata` package.
+- typer needs a newer rich than Pyodide bundles, so both pages install
+  `rich>=13.8` from PyPI.
 
 ## Structure
 
@@ -99,11 +105,13 @@ PLAN.md               the plan this was built from
 ### Adding a library
 
 Create `data/libs/<id>.js` exporting the same shape as the others (see
-`pandas.js`), add it to `data/libs/index.js`, and give it a group. Snippets
-list the Pyodide packages they need in `packages` (`pip:<name>` installs a
-pure-Python wheel from PyPI). An explainer is a `build()` that draws a scene
-with the helpers in `js/explainer.js` and a list of steps whose `patch`
-objects describe what changes; CSS transitions do the animation.
+`pandas.js`), add it to `data/libs/index.js`, and give it one of the nine
+group ids. Snippets list the Pyodide packages they need in `packages`
+(`pip:<name>` installs a pure-Python wheel from PyPI; `pip:<name>>=<version>`
+pins it). Set `runnable: false` on a library whose code cannot execute in the
+browser, or `run: false` on one snippet. An explainer is a `build()` that
+draws a scene with the helpers in `js/explainer.js` and a list of steps whose
+`patch` objects describe what changes; CSS transitions do the animation.
 
 ## Design
 
