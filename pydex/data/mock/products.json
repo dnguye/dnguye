@@ -1,0 +1,74 @@
+[
+ {
+  "id": 101,
+  "name": "Kettle, 1.7 L",
+  "category": "kitchen",
+  "price": 39.0
+ },
+ {
+  "id": 102,
+  "name": "Chef knife 20 cm",
+  "category": "kitchen",
+  "price": 64.0
+ },
+ {
+  "id": 103,
+  "name": "Cast-iron skillet",
+  "category": "kitchen",
+  "price": 48.5
+ },
+ {
+  "id": 104,
+  "name": "Desk lamp",
+  "category": "office",
+  "price": 29.9
+ },
+ {
+  "id": 105,
+  "name": "Mechanical keyboard",
+  "category": "office",
+  "price": 119.0
+ },
+ {
+  "id": 106,
+  "name": "Monitor arm",
+  "category": "office",
+  "price": 79.0
+ },
+ {
+  "id": 107,
+  "name": "Trail shoes",
+  "category": "outdoor",
+  "price": 129.0
+ },
+ {
+  "id": 108,
+  "name": "Rain shell",
+  "category": "outdoor",
+  "price": 159.0
+ },
+ {
+  "id": 109,
+  "name": "Water bottle 1 L",
+  "category": "outdoor",
+  "price": 22.0
+ },
+ {
+  "id": 110,
+  "name": "Yoga mat",
+  "category": "fitness",
+  "price": 34.0
+ },
+ {
+  "id": 111,
+  "name": "Kettlebell 16 kg",
+  "category": "fitness",
+  "price": 59.0
+ },
+ {
+  "id": 112,
+  "name": "Resistance bands",
+  "category": "fitness",
+  "price": 18.0
+ }
+]

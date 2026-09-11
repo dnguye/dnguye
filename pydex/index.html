@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pydex</title>
+<meta name="description" content="An interactive, runnable reference for the most-used Python libraries: cheat sheets, animated concepts, comparisons, and a sandbox with mock data.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23171C23'/%3E%3Cpath d='M9 23V9h7.5a4.5 4.5 0 0 1 0 9H13v5H9zm4-8h3a1.5 1.5 0 0 0 0-3h-3v3z' fill='%23E8A93A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/pydex.css">
+<script>
+  // Apply the saved theme before first paint so there is no flash.
+  try { var t = localStorage.getItem('pydex.theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="shell">
+  <header class="topbar">
+    <button class="icon-btn rail-toggle" id="rail-toggle" aria-label="Open library list" aria-controls="rail" aria-expanded="false">
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <a class="brand" href="#/" aria-label="Pydex home">
+      <span class="brand-mark" aria-hidden="true">Py</span><span class="brand-name">Pydex</span>
+    </a>
+    <button class="search-btn" id="search-btn" type="button" aria-haspopup="dialog" aria-controls="palette">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.5 10.5 14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span>Search libraries, functions, concepts</span>
+      <kbd>⌘K</kbd>
+    </button>
+    <nav class="topnav" aria-label="Primary">
+      <a href="#/compare" data-nav="compare">Compare</a>
+      <a href="#/sandbox" data-nav="sandbox">Sandbox</a>
+    </nav>
+    <button class="icon-btn" id="theme-btn" type="button" aria-label="Switch to dark theme" title="Toggle theme">
+      <svg class="ico-sun" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="3.6" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M10 2.5v2M10 15.5v2M2.5 10h2M15.5 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M4.7 15.3l1.4-1.4M13.9 6.1l1.4-1.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      <svg class="ico-moon" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M16 12.2A6.5 6.5 0 0 1 7.8 4a6.5 6.5 0 1 0 8.2 8.2z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+    </button>
+  </header>
+
+  <aside class="rail" id="rail" aria-label="Libraries">
+    <div class="rail-inner" id="rail-list"></div>
+  </aside>
+  <div class="rail-scrim" id="rail-scrim" hidden></div>
+
+  <main class="content" id="main" tabindex="-1"></main>
+
+  <aside class="toc" id="toc" aria-label="On this page"></aside>
+</div>
+
+<div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Search" hidden>
+  <div class="palette-box">
+    <div class="palette-input">
+      <svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.5 10.5 14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <input id="palette-input" type="search" placeholder="Search libraries, functions, concepts…" autocomplete="off" spellcheck="false" aria-label="Search" aria-controls="palette-results" aria-activedescendant="">
+      <kbd>Esc</kbd>
+    </div>
+    <ul class="palette-results" id="palette-results" role="listbox"></ul>
+    <div class="palette-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>↵</kbd> open</span></div>
+  </div>
+</div>
+
+<div class="toast-host" id="toasts" aria-live="polite"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

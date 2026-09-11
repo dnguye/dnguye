@@ -1,0 +1,11 @@
+id,name,team,city,hired,salary,remote
+1,Amara Okafor,Sales,Lagos,2019-03-11,72000,yes
+2,Bo Lindqvist,Sales,Oslo,2021-07-01,68000,no
+3,Chen Wei,Engineering,Singapore,2018-01-15,98000,yes
+4,Dara Nazari,Engineering,Toronto,2022-09-19,91000,yes
+5,Eli Brandt,Support,Berlin,2020-05-04,54000,no
+6,Farah Haddad,Support,Amman,2023-02-27,51000,yes
+7,Gus Moreno,Engineering,Madrid,2017-11-06,105000,no
+8,Hana Sato,Design,Osaka,2021-01-18,77000,yes
+9,Ivo Petrov,Design,Sofia,2019-08-12,73000,no
+10,Jun Park,Sales,Seoul,2024-04-01,61000,yes
