@@ -122,7 +122,7 @@ export function renderLib(main, lib, { COMPARISONS }) {
 
   // 2 cheat sheet
   parts.push(`<section class="part" id="${lib.id}-cheatsheet"><h2 id="${lib.id}-h-cheatsheet" data-toc="Cheat sheet"><span class="part-num">02</span>Cheat sheet</h2>
-    <p class="lede">${lib.runnable === false ? 'Snippets are copyable; this library needs a server process, so they do not run in the browser.' : 'Every snippet runs against the mock data in your browser. Press Run, then edit and run again in the sandbox.'}</p>
+    <p class="lede">${lib.runnable === false ? 'These snippets are copy-only: this library cannot run in the browser. The overview says why, and what to run them on.' : 'Every snippet runs against the mock data in your browser. Press Run, then edit and run again in the sandbox.'}</p>
     ${lib.cheatsheet.map((g, gi) => `<div class="group" id="${lib.id}-${g.id}"><h3 id="${lib.id}-h-${g.id}">${esc(g.title)}</h3>${g.blurb ? `<p class="blurb">${g.blurb}</p>` : ''}${g.snippets.map((s, si) => snippetHTML(s, lib, `${gi}.${si}`)).join('')}</div>`).join('')}
   </section>`);
 
