@@ -29,7 +29,7 @@ export function scene(w, h) {
   const add = (id, el, parent = root) => { if (id) { el.dataset.id = id; reg.set(id, el); } parent.appendChild(el); return el; };
   const api = {
     root, reg,
-    g(id, x = 0, y = 0, cls = '', parent) { const el = svg('g', { cls }); el.style.transform = `translate(${x}px,${y}px)`; return add(id, el, parent); },
+    g(id, x = 0, y = 0, cls = '', parent) { const el = svg('g', { cls }); el.style.transform = `translate(${x}px,${y}px)`; el.dataset.pos = JSON.stringify({ x, y }); return add(id, el, parent); },
     rect(id, x, y, w, h, cls = 'cell', parent, r = 5) { return add(id, svg('rect', { x, y, width: w, height: h, rx: r, cls }), parent); },
     text(id, x, y, t, cls = 'lbl', parent, anchor = 'middle') { return add(id, svg('text', { x, y, text: t, cls, 'text-anchor': anchor, 'dominant-baseline': 'middle' }), parent); },
     arrow(id, x1, y1, x2, y2, cls = 'arrow', parent) { return add(id, svg('path', { d: `M${x1} ${y1} L${x2} ${y2}`, cls }), parent); },
