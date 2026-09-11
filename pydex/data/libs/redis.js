@@ -218,9 +218,9 @@ def buy(qty):
                 continue                             # someone else changed it: retry
 
 print(buy(2), buy(2), r.get("stock:kettle"))
-# same thing with less code:
-r.set("stock:kettle", 3)
-print(r.transaction(lambda p: p.decrby("stock:kettle", 1), "stock:kettle"))`, note: '<code>WATCH</code> is check-and-set: if a watched key changes between WATCH and EXEC the transaction fails with <code>WatchError</code> instead of writing stale data. For hot keys prefer a single atomic command or a Lua script.' },
+
+# r.transaction(fn, "stock:kettle") wraps exactly this retry loop in one call.
+# It is not run here: the in-memory stand-in this page uses does not implement it.`, note: '<code>WATCH</code> is check-and-set: if a watched key changes between WATCH and EXEC the transaction fails with <code>WatchError</code> instead of writing stale data. For hot keys prefer a single atomic command or a Lua script.' },
     ] },
     { id: 'patterns', title: 'Caching, rate limits, locks', snippets: [
       { title: 'Cache-aside with a TTL', code: `import redis, json, time
