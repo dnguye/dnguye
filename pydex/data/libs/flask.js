@@ -57,7 +57,7 @@ const contextExplainer = {
 
 export default {
   id: 'flask', name: 'Flask', glyph: 'fl', group: 'http', version: '3.1', keywords: 'web framework wsgi route request response jinja blueprint session',
-  tagline: 'A small WSGI framework: routes, requests, Jinja templates, and nothing you did not ask for.',
+  tagline: 'A small WSGI framework: routes, requests, Jinja templates, nothing more.',
   install: 'pip install flask', docs: 'https://flask.palletsprojects.com/', packages: ['pip:flask'],
   overview: {
     what: 'Flask maps URLs to Python functions and hands them a request object; whatever they return becomes the response. It ships routing (werkzeug), templating (Jinja), signed cookie sessions and a test client, and leaves databases, auth and forms to extensions you pick. The app is a plain WSGI callable, so gunicorn, uWSGI or any WSGI server runs it.',
