@@ -409,4 +409,108 @@ print(len(blob), "bytes;", pickle.loads(blob) == row)
     ],
     verdict: 'Counter for tallies, defaultdict for grouping, namedtuple for small immutable records, dataclass for anything with behaviour or many fields, plain dict when keys are data.',
   },
+  {
+    id: 'paths', title: 'pathlib vs os.path vs shutil', lede: 'Three generations of file-system API, all still in the standard library.', libs: ['pathlib'],
+    columns: ['pathlib', 'os.path + os', 'shutil'],
+    rows: [
+      ['A path is', 'a Path object', 'a str', 'a str or Path argument'],
+      ['Join', { code: 'base / "a" / "b.csv"' }, { code: 'os.path.join(base, "a", "b.csv")' }, { part: 'n/a' }],
+      ['Read a whole file', { code: 'p.read_text()' }, { code: 'open(p).read()' }, { part: 'n/a' }],
+      ['Walk a tree by pattern', { code: 'p.rglob("*.csv")' }, { code: 'os.walk + fnmatch' }, { part: 'n/a' }],
+      ['Copy / move / delete a tree', false, { part: 'os.remove, os.rmdir' }, true],
+      ['Suffix and stem manipulation', { code: 'p.with_suffix(".json")' }, { code: 'os.path.splitext' }, { part: 'n/a' }],
+      ['Reads well in a chain', { dots: 5 }, { dots: 2 }, { dots: 3 }],
+    ],
+    verdict: 'pathlib for anything that names or inspects a file, shutil for bulk copy, move and delete (it takes Path objects happily). os.path only in code that must stay on strings.',
+    snippets: [
+      { title: 'pathlib', packages: [], code: `from pathlib import Path
+data = Path("/data")
+for p in sorted(data.glob("*.csv")):
+    print(p.name, p.stat().st_size, "bytes", "->", p.with_suffix(".json").name)
+print((data / "products.json").read_text()[:60])` },
+      { title: 'os.path', packages: [], code: `import os, glob
+data = "/data"
+for p in sorted(glob.glob(os.path.join(data, "*.csv"))):
+    stem, _ = os.path.splitext(os.path.basename(p))
+    print(os.path.basename(p), os.path.getsize(p), "bytes", "->", stem + ".json")
+with open(os.path.join(data, "products.json")) as f:
+    print(f.read()[:60])` },
+    ],
+  },
+  {
+    id: 'lazy-iteration', title: 'itertools vs generator expressions vs more-itertools', lede: 'Walking a sequence without building it: what the standard library already gives you.', libs: ['itertools', 'collections'],
+    columns: ['generator expression', 'itertools', 'more-itertools'],
+    rows: [
+      ['In the standard library', true, true, false],
+      ['Filter and map', true, { part: 'filterfalse, starmap' }, true],
+      ['Consecutive runs of equal keys', false, { code: 'groupby' }, { code: 'split_when' }],
+      ['Sliding window / chunks', false, { part: 'batched (3.12+)' }, { code: 'windowed, chunked' }],
+      ['Combinations and products', false, true, true],
+      ['Infinite sequences', { part: 'write a loop' }, { code: 'count, cycle, repeat' }, true],
+      ['Peek without consuming', false, { part: 'tee' }, { code: 'peekable' }],
+      ['Readable for one simple transform', { dots: 5 }, { dots: 3 }, { dots: 3 }],
+    ],
+    verdict: 'A generator expression covers most filtering and mapping. Reach for itertools when you need the named pattern (groupby, chain, islice, product), and more-itertools only when it has the exact recipe you were about to write by hand.',
+    snippets: [
+      { title: 'generator expression', packages: [], code: `import csv
+with open("/data/orders.csv") as f:
+    rows = list(csv.DictReader(f))
+big = (r for r in rows if int(r["quantity"]) >= 4)
+print(sum(1 for _ in big), "orders of 4 or more")
+print([r["order_id"] for r in rows if r["region"] == "North"][:5])` },
+      { title: 'itertools', packages: [], code: `import csv, itertools as it
+with open("/data/orders.csv") as f:
+    rows = sorted(csv.DictReader(f), key=lambda r: r["region"])
+for region, group in it.groupby(rows, key=lambda r: r["region"]):
+    g = list(group)
+    print(f"{region:<6} {len(g):>3} orders, first {g[0]['order_id']}")
+print(list(it.islice(it.count(10, 5), 4)))` },
+    ],
+  },
+  {
+    id: 'text-parsing', title: 'str methods vs re vs a real parser', lede: 'Escalate only when the text does.', libs: ['re'],
+    columns: ['str methods', 're', 'a parser (csv, json, html)'],
+    rows: [
+      ['Fixed delimiters and prefixes', true, true, true],
+      ['Quoted fields, escapes, nesting', false, false, true],
+      ['Optional and repeated parts', false, true, true],
+      ['Speed on simple splits', { dots: 5 }, { dots: 3 }, { dots: 4 }],
+      ['Readable six months later', { dots: 5 }, { dots: 2 }, { dots: 4 }],
+      ['Fails loudly on malformed input', { part: 'silently wrong' }, { part: 'returns None' }, true],
+    ],
+    verdict: 'Try <code>split</code>, <code>startswith</code> and <code>partition</code> first. Use <code>re</code> for shapes that vary. For CSV, JSON, HTML or dates, use the parser that exists: a regex over structured text is the classic source of quiet data corruption.',
+    snippets: [
+      { title: 'str methods', packages: [], code: `line = "1001,2025-11-06,South,Eli,106,1,79.0,0,shipped"
+order_id, date, region, rest = line.split(",", 3)
+print(order_id, date, region)
+print(date.startswith("2025"), line.count(","), line.rpartition(",")[2])` },
+      { title: 're', packages: [], code: `import re
+pat = re.compile(r"^(?P<id>\\d+),(?P<date>\\d{4}-\\d{2}-\\d{2}),(?P<region>\\w+),")
+line = "1001,2025-11-06,South,Eli,106,1,79.0,0,shipped"
+m = pat.match(line)
+print(m.group("id"), m.group("date"), m.group("region"))
+print(pat.match("bad line") is None)` },
+      { title: 'csv', packages: [], code: `import csv
+with open("/data/orders.csv") as f:
+    row = next(csv.DictReader(f))
+print(row["order_id"], row["date"], row["region"])
+# handles quoted commas, embedded newlines and the header for you
+print(list(row)[:5])` },
+    ],
+  },
+  {
+    id: 'llm-frameworks', title: 'LangChain vs LlamaIndex vs calling the API directly', lede: 'How much framework an LLM application actually needs.', libs: ['langchain', 'pydantic'],
+    columns: ['provider SDK directly', 'LangChain', 'LlamaIndex'],
+    rows: [
+      ['Dependencies', 'one', 'several packages', 'several packages'],
+      ['Swap providers without rewriting', false, true, true],
+      ['Prompt, chain and parser composition', { part: 'your own functions' }, true, { part: 'query pipelines' }],
+      ['Retrieval over your documents', false, { part: 'vector store integrations' }, true],
+      ['Document loaders and chunking', false, { part: 'many' }, { dots: 5 }],
+      ['Agents and tool calling', { part: 'the SDK loop' }, { part: 'LangGraph' }, true],
+      ['Easy to debug what was actually sent', { dots: 5 }, { dots: 2 }, { dots: 2 }],
+      ['API stability across releases', { dots: 4 }, { dots: 2 }, { dots: 2 }],
+    ],
+    verdict: 'For one prompt and one model, the provider SDK is less code and far easier to debug. LangChain earns its place when you swap providers, compose steps, or want the integration already written; LlamaIndex when retrieval over your own documents is the product. Both move fast, so pin versions.',
+  },
 ];

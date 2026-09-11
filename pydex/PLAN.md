@@ -34,11 +34,13 @@ Each library page has the same five parts, in this order:
    the cross-library charts.
 5. **Gotchas** — short, concrete, with the fix.
 
-Cross-library **Compare** page: feature matrices and rating charts
-(pandas / polars / numpy, requests / httpx / urllib, pytest / unittest,
-pydantic / dataclasses / attrs, fastapi / flask / django, sqlalchemy core /
-ORM / sqlite3, asyncio / threading / multiprocessing). Ratings are
-qualitative (1–5 dots) and features are yes/no; no invented benchmarks.
+Cross-library **Compare** page: 23 feature matrices and rating charts
+(pandas / polars / numpy, requests / httpx / urllib, argparse / click / typer,
+ruff / flake8+black / mypy, pydantic / dataclasses / attrs, fastapi / flask /
+django, Celery / RQ / Dramatiq / arq, boto3 / google-cloud / azure,
+LangChain / LlamaIndex / the provider SDK, and so on). Ratings are
+qualitative (1–5 dots) and features are yes/no; no invented benchmarks. Every
+library links to at least one of them.
 
 ## Sandbox
 

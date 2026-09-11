@@ -32,7 +32,7 @@ friendly, honours `prefers-reduced-motion`), **Compare** (tables inside the
 library plus links to the cross-library page), and **Gotchas** (surprising →
 do this → why).
 
-The **Compare** page holds nineteen cross-library matrices (pandas vs polars vs
+The **Compare** page holds twenty-three cross-library matrices (pandas vs polars vs
 numpy, requests vs httpx vs urllib, argparse vs click vs typer, Celery vs RQ vs
 Dramatiq vs arq, …). Ratings are 1–5 judgement calls, features are yes / no / partial;
 where code is shown, the "lines" bars are counted from the snippets on the
