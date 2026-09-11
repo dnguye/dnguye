@@ -39,7 +39,7 @@ function renderRail() {
       ${(byGroup[g.id] || []).map(l => `<a href="#/lib/${l.id}" data-lib="${l.id}"><span class="glyph" data-g="${l.group}" aria-hidden="true">${l.glyph}</span>${l.name}</a>`).join('')}
     </div>`).join('') + `
     <div class="rail-group"><div class="eyebrow">More</div>
-      <a href="#/compare" data-nav="compare"><span class="glyph" data-g="correct" aria-hidden="true" style="background:var(--ink-3)">vs</span>Compare</a>
+      <a href="#/compare" data-nav="compare"><span class="glyph" aria-hidden="true" style="background:var(--ink-3)">vs</span>Compare</a>
       <a href="#/sandbox" data-nav="sandbox"><span class="glyph" aria-hidden="true" style="background:var(--accent);color:var(--accent-ink)">&gt;_</span>Sandbox</a>
     </div>`;
 }

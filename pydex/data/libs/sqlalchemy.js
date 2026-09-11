@@ -61,7 +61,7 @@ engine = create_engine("sqlite:////data/shop.sqlite")
 `;
 
 export default {
-  id: 'sqlalchemy', name: 'SQLAlchemy', glyph: 'sa', group: 'store', version: '2.0', keywords: 'orm database sql session engine query postgres sqlite mysql',
+  id: 'sqlalchemy', name: 'SQLAlchemy', glyph: 'sa', group: 'db', version: '2.0', keywords: 'orm database sql session engine query postgres sqlite mysql',
   tagline: 'SQL toolkit and ORM: one API for every relational database.',
   install: 'pip install sqlalchemy', docs: 'https://docs.sqlalchemy.org/en/20/', packages: ['sqlalchemy'],
   overview: {

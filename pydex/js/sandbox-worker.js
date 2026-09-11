@@ -147,7 +147,26 @@ def _pydex_patch_threadpool():
     except Exception:
         pass
 
+def _pydex_patch_redis():
+    # No Redis server in the browser: route the redis client to an in-memory fakeredis.
+    import redis
+    if getattr(redis, '_pydex', False): return
+    try:
+        import fakeredis
+    except Exception:
+        return
+    redis.Redis = fakeredis.FakeRedis; redis.StrictRedis = fakeredis.FakeStrictRedis
+    redis.from_url = lambda url, **k: fakeredis.FakeRedis(**{kk: v for kk, v in k.items() if kk in ('decode_responses',)})
+    try:
+        import redis.asyncio, fakeredis.aioredis
+        redis.asyncio.Redis = fakeredis.aioredis.FakeRedis
+        redis.asyncio.from_url = lambda url, **k: fakeredis.aioredis.FakeRedis(**{kk: v for kk, v in k.items() if kk in ('decode_responses',)})
+    except Exception:
+        pass
+    redis._pydex = True
+
 def _pydex_after_load():
+    if 'redis' in sys.modules: _pydex_patch_redis()
     if 'requests' in sys.modules: _pydex_patch_requests()
     if 'httpx' in sys.modules: _pydex_patch_httpx()
     if 'fastapi' in sys.modules: _pydex_patch_threadpool()
@@ -162,7 +181,8 @@ class _AsyncioRun(ast.NodeTransformer):
             return ast.Await(value=node.args[0])
         return node
 
-_pydex_ns = {'__name__': '__main__'}
+_pydex_main = types.ModuleType('__main__')   # a real module, so ROOT_URLCONF=__name__, pickle etc. work
+_pydex_ns = _pydex_main.__dict__
 
 def _pydex_display(val):
     if val is None: return None
@@ -170,6 +190,8 @@ def _pydex_display(val):
         import matplotlib.figure
         if isinstance(val, matplotlib.figure.Figure): return None
     except Exception: pass
+    if 'plotly' in sys.modules and hasattr(val, 'to_plotly_json') and hasattr(val, 'to_json'):
+        return {'kind': 'plotly', 'json': val.to_json()}
     h = getattr(val, '_repr_html_', None)
     if callable(h):
         try:
@@ -191,7 +213,11 @@ def _pydex_figures():
     return out
 
 async def _pydex_run(code, fresh):
-    ns = {'__name__': '__main__'} if fresh else _pydex_ns
+    if fresh:
+        mod = types.ModuleType('__main__'); ns = mod.__dict__
+    else:
+        mod = _pydex_main; ns = _pydex_ns
+    sys.modules['__main__'] = mod
     result = None; error = None
     try:
         tree = ast.parse(code, '<sandbox>')
@@ -232,7 +258,7 @@ const MOCK_FILES = ['orders.csv', 'employees.csv', 'products.json', 'page.html']
 async function init() {
   post({ type: 'status', stage: 'loading', text: 'Downloading the Python runtime (about 10 MB, cached afterwards)' });
   pyodide = await loadPyodide({ indexURL: PYODIDE });
-  await pyodide.loadPackage('sqlite3', { messageCallback: () => {} }); // unvendored from the stdlib in Pyodide
+  await pyodide.loadPackage(['sqlite3', 'ssl'], { messageCallback: () => {} }); // unvendored from the stdlib in Pyodide
   post({ type: 'status', stage: 'loading', text: 'Mounting mock data at /data' });
   try { pyodide.FS.mkdir('/data'); } catch (e) {}
   for (const f of MOCK_FILES) {
@@ -265,7 +291,7 @@ self.onmessage = async (ev) => {
       }
       try { await pyodide.loadPackagesFromImports(m.code, { messageCallback: () => {} }); } catch (e) {}
       // import so the patches can see the modules, then patch
-      for (const name of ['requests', 'httpx', 'fastapi']) if (m.code.includes(name)) { try { await pyodide.runPythonAsync(`import ${name}`); } catch (e) {} }
+      for (const name of ['requests', 'httpx', 'fastapi', 'redis']) if (m.code.includes(name)) { try { await pyodide.runPythonAsync(`import ${name}`); } catch (e) {} }
       await pyodide.runPythonAsync('_pydex_after_load()');
       post({ type: 'status', stage: 'running', id: m.id, text: 'Running' });
       currentRun = m.id;

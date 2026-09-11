@@ -54,7 +54,7 @@ export function renderHome(main, { LIBS, GROUPS, COMPARISONS }) {
   const demoSnippet = demo?.cheatsheet[0]?.snippets[0];
   main.innerHTML = `<div class="page">
     <section class="hero">
-      <div class="eyebrow">Interactive reference · ${LIBS.length} libraries</div>
+      <div class="eyebrow">Interactive reference · ${LIBS.length} libraries · ${GROUPS.length} categories</div>
       <h1>The Python libraries you actually use, runnable on the page.</h1>
       <p class="lede">Cheat sheets with a Run button, the hard ideas animated step by step, honest comparison tables, and a sandbox loaded with mock data. No install, no account.</p>
       <div class="hero-row"><a class="btn primary" href="#/lib/pandas">Start with pandas</a><a class="btn" href="#/sandbox">Open the sandbox</a><span class="muted" style="font-size:.9rem">Python runs in your browser via Pyodide.</span></div>
@@ -63,7 +63,7 @@ export function renderHome(main, { LIBS, GROUPS, COMPARISONS }) {
 
     <section class="section" id="libraries">
       <div class="section-head"><h2>Libraries</h2><p>Grouped by the job they do. Each page follows the same shape: overview, cheat sheet, animated concepts, comparisons, gotchas.</p></div>
-      ${GROUPS.map(g => `<div class="group"><h3>${g.label}</h3><p class="blurb">${g.blurb}</p><div class="lib-grid">${(byGroup[g.id] || []).map(l => `<a class="lib-card" href="#/lib/${l.id}"><span class="glyph" data-g="${l.group}" aria-hidden="true">${l.glyph}</span><b>${l.name}</b><span>${esc(l.tagline)}</span></a>`).join('')}</div></div>`).join('')}
+      ${GROUPS.map(g => `<div class="group" id="cat-${g.id}"><h3 id="cat-h-${g.id}">${g.label} <span class="muted" style="font-weight:400;font-size:.9rem">· ${(byGroup[g.id] || []).length}</span></h3><p class="blurb">${g.blurb}</p><div class="lib-grid">${(byGroup[g.id] || []).map(l => `<a class="lib-card" href="#/lib/${l.id}"><span class="glyph" data-g="${l.group}" aria-hidden="true">${l.glyph}</span><b>${l.name}</b><span>${esc(l.tagline)}</span></a>`).join('')}</div></div>`).join('')}
     </section>
 
     <section class="section" id="how">

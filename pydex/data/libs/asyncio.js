@@ -36,7 +36,7 @@ const loopExplainer = {
 };
 
 export default {
-  id: 'asyncio', name: 'asyncio', glyph: 'aio', group: 'async', version: '3.12, standard library', keywords: 'async await coroutine event loop concurrency task gather',
+  id: 'asyncio', name: 'asyncio', glyph: 'aio', group: 'essentials', version: '3.12, standard library', keywords: 'async await coroutine event loop concurrency task gather',
   tagline: 'Concurrency for waiting: run many slow I/O operations on one thread.',
   install: 'built in — import asyncio', docs: 'https://docs.python.org/3/library/asyncio.html', packages: [],
   overview: {

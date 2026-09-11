@@ -41,7 +41,7 @@ test_file = pathlib.Path(f"/tmp/{name}.py"); test_file.write_text(src)
 pytest.main(["-q", "-p", "no:cacheprovider", str(test_file)])`;
 
 export default {
-  id: 'pytest', name: 'pytest', glyph: 'pyt', group: 'correct', version: '8.x', keywords: 'test testing fixture parametrize mock assert unittest',
+  id: 'pytest', name: 'pytest', glyph: 'pyt', group: 'testing', version: '8.x', keywords: 'test testing fixture parametrize mock assert unittest',
   tagline: 'Tests as plain functions. Fixtures, parametrize, rich asserts.',
   install: 'pip install pytest', docs: 'https://docs.pytest.org/', packages: ['pytest'],
   overview: {

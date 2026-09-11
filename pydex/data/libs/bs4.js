@@ -34,7 +34,7 @@ const treeExplainer = {
 };
 
 export default {
-  id: 'bs4', name: 'beautifulsoup4', glyph: 'bs', group: 'web', version: '4.12', keywords: 'html parse scrape scraping css selector xml',
+  id: 'bs4', name: 'beautifulsoup4', glyph: 'bs', group: 'automation', version: '4.12', keywords: 'html parse scrape scraping css selector xml',
   tagline: 'Pull data out of HTML: find, select, navigate, extract.',
   install: 'pip install beautifulsoup4', docs: 'https://www.crummy.com/software/BeautifulSoup/bs4/doc/', packages: ['beautifulsoup4'],
   overview: {

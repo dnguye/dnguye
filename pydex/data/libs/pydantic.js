@@ -35,7 +35,7 @@ const validationExplainer = {
 };
 
 export default {
-  id: 'pydantic', name: 'pydantic', glyph: 'pyd', group: 'correct', version: '2.x', keywords: 'validation model schema json settings types dataclass',
+  id: 'pydantic', name: 'pydantic', glyph: 'pyd', group: 'models', version: '2.x', keywords: 'validation model schema json settings types dataclass',
   tagline: 'Type hints that validate: parse untrusted data into real objects.',
   install: 'pip install pydantic', docs: 'https://docs.pydantic.dev/latest/', packages: ['pydantic'],
   overview: {

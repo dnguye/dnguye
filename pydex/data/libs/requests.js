@@ -39,7 +39,7 @@ const lifecycleExplainer = {
 };
 
 export default {
-  id: 'requests', name: 'requests', glyph: 'rq', group: 'web', version: '2.32', keywords: 'http get post api json session headers auth timeout',
+  id: 'requests', name: 'requests', glyph: 'rq', group: 'http', version: '2.32', keywords: 'http get post api json session headers auth timeout',
   tagline: 'HTTP for humans: GET, POST, sessions, and sane error handling.',
   install: 'pip install requests', docs: 'https://requests.readthedocs.io/', packages: ['requests'],
   overview: {

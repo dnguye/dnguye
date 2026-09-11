@@ -42,9 +42,11 @@ export async function runInto(outEl, code, packages = [], { fresh = true } = {})
   outEl.innerHTML = `<div class="out-head">Output <span class="ms"></span></div><div class="out-body"><div class="status">${STATUS_ICON}<span>Starting Python…</span><div class="progress"><i></i></div></div></div>`;
   const body = outEl.querySelector('.out-body'), status = outEl.querySelector('.status span');
   let stdoutEl = null;
+  let raw = '';
   const append = (text, cls) => {
-    if (!stdoutEl || stdoutEl.className !== cls) { stdoutEl = document.createElement('pre'); stdoutEl.className = cls; body.appendChild(stdoutEl); }
-    stdoutEl.textContent += text;
+    if (!stdoutEl || stdoutEl.className !== cls) { stdoutEl = document.createElement('pre'); stdoutEl.className = cls; body.appendChild(stdoutEl); raw = ''; }
+    raw += text;
+    if (raw.includes('\x1b[')) stdoutEl.innerHTML = ansiToHtml(raw); else stdoutEl.textContent = raw;
   };
   const res = await sandbox.run(code, {
     packages, fresh,
@@ -59,9 +61,34 @@ export async function runInto(outEl, code, packages = [], { fresh = true } = {})
   return res;
 }
 
+// Minimal ANSI SGR → HTML (16 colours, 256-colour approximations, bold/dim/italic/underline).
+const ANSI16 = ['#171C23', '#B8382C', '#1F7A50', '#8F5E12', '#2457B3', '#8B2F8F', '#0E7490', '#A7B0BC', '#6E7886', '#F07C71', '#4FC08D', '#E8A93A', '#6FA1F2', '#D58CE0', '#6FD3E0', '#E6EAF0'];
+function ansi256(n) { if (n < 16) return ANSI16[n]; if (n >= 232) { const v = 8 + (n - 232) * 10; return `rgb(${v},${v},${v})`; } n -= 16; const b = n % 6, g = Math.floor(n / 6) % 6, r = Math.floor(n / 36); const c = x => x ? 55 + x * 40 : 0; return `rgb(${c(r)},${c(g)},${c(b)})`; }
+export function ansiToHtml(text) {
+  let out = '', open = false, st = {};
+  const style = () => { const s = []; if (st.fg) s.push(`color:${st.fg}`); if (st.bg) s.push(`background:${st.bg}`); if (st.b) s.push('font-weight:700'); if (st.d) s.push('opacity:.6'); if (st.i) s.push('font-style:italic'); if (st.u) s.push('text-decoration:underline'); return s.join(';'); };
+  const parts = text.split(/(\x1b\[[0-9;]*m)/);
+  for (const p of parts) {
+    if (p.startsWith('\x1b[')) {
+      const codes = p.slice(2, -1).split(';').map(Number); let i = 0;
+      while (i < codes.length) { const c = codes[i]; if (c === 0 || isNaN(c)) st = {}; else if (c === 1) st.b = 1; else if (c === 2) st.d = 1; else if (c === 3) st.i = 1; else if (c === 4) st.u = 1; else if (c === 22) { st.b = 0; st.d = 0; } else if (c === 23) st.i = 0; else if (c === 24) st.u = 0; else if (c === 39) st.fg = ''; else if (c === 49) st.bg = ''; else if (c >= 30 && c <= 37) st.fg = ANSI16[c - 30]; else if (c >= 90 && c <= 97) st.fg = ANSI16[c - 90 + 8]; else if (c >= 40 && c <= 47) st.bg = ANSI16[c - 40]; else if (c >= 100 && c <= 107) st.bg = ANSI16[c - 100 + 8]; else if ((c === 38 || c === 48) && codes[i + 1] === 5) { const col = ansi256(codes[i + 2]); if (c === 38) st.fg = col; else st.bg = col; i += 2; } else if ((c === 38 || c === 48) && codes[i + 1] === 2) { const col = `rgb(${codes[i + 2]},${codes[i + 3]},${codes[i + 4]})`; if (c === 38) st.fg = col; else st.bg = col; i += 4; } i++; }
+      if (open) { out += '</span>'; open = false; }
+      const css = style(); if (css) { out += `<span style="${css}">`; open = true; }
+    } else out += esc(p);
+  }
+  return out + (open ? '</span>' : '');
+}
+let plotlyLoading = null;
+function loadPlotly() { return plotlyLoading ||= new Promise((res, rej) => { if (window.Plotly) return res(); const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js'; s.onload = res; s.onerror = () => rej(new Error('plotly.js failed to load')); document.head.appendChild(s); }); }
 export function renderResult(body, res) {
   if (res.result) {
-    if (res.result.kind === 'html') { const d = document.createElement('div'); d.className = 'df'; d.innerHTML = sanitize(res.result.html); body.appendChild(d); }
+    if (res.result.kind === 'plotly') {
+      const d = document.createElement('div'); d.className = 'plotly-host'; body.appendChild(d);
+      const fig = JSON.parse(res.result.json);
+      const dark = document.documentElement.dataset.theme === 'dark' || (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+      loadPlotly().then(() => window.Plotly.newPlot(d, fig.data, { ...fig.layout, autosize: true, height: fig.layout?.height || 380, paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)', font: { ...(fig.layout?.font || {}), color: dark ? '#E6EAF0' : '#171C23' } }, { responsive: true, displaylogo: false })).catch(e => { const p = document.createElement('pre'); p.className = 'warn'; p.textContent = e.message; body.appendChild(p); });
+    }
+    else if (res.result.kind === 'html') { const d = document.createElement('div'); d.className = 'df'; d.innerHTML = sanitize(res.result.html); body.appendChild(d); }
     else { const p = document.createElement('pre'); p.className = 'result'; p.textContent = res.result.text; body.appendChild(p); }
   }
   for (const f of res.figures || []) { const img = document.createElement('img'); img.alt = 'matplotlib figure'; img.src = 'data:image/png;base64,' + f; body.appendChild(img); }

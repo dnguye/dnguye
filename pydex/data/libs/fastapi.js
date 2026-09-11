@@ -39,7 +39,7 @@ const requestExplainer = {
 };
 
 export default {
-  id: 'fastapi', name: 'fastapi', glyph: 'api', group: 'web', version: '0.115', keywords: 'api rest server endpoint async uvicorn openapi swagger',
+  id: 'fastapi', name: 'fastapi', glyph: 'api', group: 'http', version: '0.115', keywords: 'api rest server endpoint async uvicorn openapi swagger',
   tagline: 'Typed HTTP APIs: declare parameters, get validation and docs for free.',
   install: 'pip install "fastapi[standard]"', docs: 'https://fastapi.tiangolo.com/', packages: ['pip:fastapi', 'httpx'],
   overview: {

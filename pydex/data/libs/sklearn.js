@@ -71,7 +71,7 @@ const cvExplainer = {
 };
 
 export default {
-  id: 'sklearn', name: 'scikit-learn', glyph: 'sk', group: 'data', version: '1.5', keywords: 'machine learning model fit predict classifier regression pipeline cross validation',
+  id: 'sklearn', name: 'scikit-learn', glyph: 'sk', group: 'ai', version: '1.5', keywords: 'machine learning model fit predict classifier regression pipeline cross validation',
   tagline: 'Classic machine learning with one consistent fit / predict API.',
   install: 'pip install scikit-learn', docs: 'https://scikit-learn.org/stable/', packages: ['scikit-learn', 'numpy'],
   overview: {

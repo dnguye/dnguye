@@ -6,15 +6,22 @@ explainers for the ideas people trip on, comparison tables, and a sandbox with
 mock data. Lives at `pydex/` in this repo like its sibling `atlas/`; deploys as
 plain files (GitHub Pages, Netlify, `python3 -m http.server`).
 
-## Scope (v1)
+## Scope
 
-| Group | Libraries |
+v1 shipped twelve libraries in five groups. v2 reorganised into nine categories
+and filled them in (42 libraries):
+
+| Category | Libraries |
 |---|---|
-| Data | numpy, pandas, polars, matplotlib, scikit-learn |
-| Web | requests, beautifulsoup4, fastapi |
-| Correctness | pydantic, pytest |
-| Storage | sqlalchemy |
-| Concurrency | asyncio |
+| Python essentials | pathlib, datetime, collections, itertools, json, re, asyncio |
+| HTTP and APIs | requests, httpx, aiohttp, FastAPI, Flask, Django |
+| Data work | numpy, pandas, polars, matplotlib, seaborn, plotly |
+| Validation and models | pydantic, dataclasses, attrs |
+| Databases | SQLAlchemy, psycopg, sqlite3, redis |
+| Testing and quality | pytest, hypothesis, ruff, mypy |
+| Automation | typer, click, rich, Beautiful Soup, Playwright |
+| AI and ML | scikit-learn, PyTorch, transformers, LangChain |
+| Cloud and integrations | boto3, google-cloud-*, Celery |
 
 Each library page has the same five parts, in this order:
 

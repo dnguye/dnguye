@@ -41,7 +41,7 @@ list(zip(regions[order], totals[order].round(2)))` },
     ],
   },
   {
-    id: 'http', title: 'requests vs httpx vs urllib', lede: 'Making HTTP calls: the classic, the modern, and the one already installed.', libs: ['requests', 'asyncio'],
+    id: 'http', title: 'requests vs httpx vs urllib', lede: 'Making HTTP calls: the classic, the modern, and the one already installed.', libs: ['requests', 'httpx', 'aiohttp', 'asyncio'],
     columns: ['requests', 'httpx', 'urllib.request', 'aiohttp'],
     rows: [
       ['In the standard library', false, false, true, false],
@@ -73,7 +73,7 @@ asyncio.run(main())` },
     ],
   },
   {
-    id: 'plotting', title: 'matplotlib vs seaborn vs plotly vs altair', lede: 'Static control, statistical defaults, or interactive output.', libs: ['matplotlib', 'pandas'],
+    id: 'plotting', title: 'matplotlib vs seaborn vs plotly vs altair', lede: 'Static control, statistical defaults, or interactive output.', libs: ['matplotlib', 'seaborn', 'plotly', 'pandas'],
     columns: ['matplotlib', 'seaborn', 'plotly', 'altair'],
     rows: [
       ['Output', 'static image', 'static image (matplotlib)', 'interactive HTML', 'interactive HTML (Vega)'],
@@ -87,7 +87,7 @@ asyncio.run(main())` },
     verdict: 'seaborn for exploring a DataFrame, matplotlib to finish the figure, plotly when the reader needs to hover and zoom.',
   },
   {
-    id: 'testing', title: 'pytest vs unittest', lede: 'The third-party standard against the one in the standard library.', libs: ['pytest'],
+    id: 'testing', title: 'pytest vs unittest', lede: 'The third-party standard against the one in the standard library.', libs: ['pytest', 'hypothesis'],
     columns: ['pytest', 'unittest'],
     rows: [
       ['Test as a plain function', true, false],
@@ -121,7 +121,7 @@ unittest.main(argv=["x"], exit=False, verbosity=1)` },
     ],
   },
   {
-    id: 'models', title: 'pydantic vs dataclasses vs attrs vs TypedDict', lede: 'Four ways to give a record a shape.', libs: ['pydantic'],
+    id: 'models', title: 'pydantic vs dataclasses vs attrs vs TypedDict', lede: 'Four ways to give a record a shape.', libs: ['pydantic', 'dataclasses', 'attrs'],
     columns: ['pydantic', 'dataclasses', 'attrs', 'TypedDict'],
     rows: [
       ['In the standard library', false, true, false, true],
@@ -154,7 +154,7 @@ p` },
     ],
   },
   {
-    id: 'web-frameworks', title: 'FastAPI vs Flask vs Django', lede: 'Typed async APIs, the minimal classic, or the batteries-included framework.', libs: ['fastapi', 'pydantic'],
+    id: 'web-frameworks', title: 'FastAPI vs Flask vs Django', lede: 'Typed async APIs, the minimal classic, or the batteries-included framework.', libs: ['fastapi', 'flask', 'django', 'pydantic'],
     columns: ['FastAPI', 'Flask', 'Django'],
     rows: [
       ['Async-native', true, { part: 'since 2.0, limited' }, { part: 'views yes, ORM partly' }],
@@ -169,7 +169,7 @@ p` },
     verdict: 'FastAPI for an API consumed by other programs. Django when you need the admin, auth and ORM on day one. Flask when the whole thing fits in one file and you want to pick every part yourself.',
   },
   {
-    id: 'databases', title: 'SQLAlchemy vs Django ORM vs sqlite3', lede: 'How much the database layer should know about your objects.', libs: ['sqlalchemy'],
+    id: 'databases', title: 'SQLAlchemy vs Django ORM vs sqlite3', lede: 'How much the database layer should know about your objects.', libs: ['sqlalchemy', 'psycopg', 'sqlite3', 'django'],
     columns: ['SQLAlchemy ORM', 'SQLAlchemy Core', 'Django ORM', 'sqlite3 / psycopg'],
     rows: [
       ['Framework independent', true, true, false, true],
@@ -217,7 +217,7 @@ if __name__ == "__main__":
     ],
   },
   {
-    id: 'scraping', title: 'Beautiful Soup vs lxml vs Scrapy vs Playwright', lede: 'Parsing a page, parsing fast, crawling a site, or driving a browser.', libs: ['bs4', 'requests'],
+    id: 'scraping', title: 'Beautiful Soup vs lxml vs Scrapy vs Playwright', lede: 'Parsing a page, parsing fast, crawling a site, or driving a browser.', libs: ['bs4', 'playwright', 'requests'],
     columns: ['Beautiful Soup', 'lxml', 'Scrapy', 'Playwright'],
     rows: [
       ['Fetches pages itself', false, false, true, true],
@@ -231,7 +231,7 @@ if __name__ == "__main__":
     verdict: 'requests + Beautiful Soup for a page or two, Scrapy for a whole site, Playwright when the content only exists after JavaScript runs.',
   },
   {
-    id: 'ml', title: 'scikit-learn vs XGBoost / LightGBM vs PyTorch', lede: 'Classic models, boosted trees, or neural networks.', libs: ['sklearn'],
+    id: 'ml', title: 'scikit-learn vs XGBoost / LightGBM vs PyTorch', lede: 'Classic models, boosted trees, or neural networks.', libs: ['sklearn', 'pytorch'],
     columns: ['scikit-learn', 'XGBoost / LightGBM', 'PyTorch'],
     rows: [
       ['Tabular data', { dots: 5 }, { dots: 5 }, { dots: 2 }],
@@ -242,5 +242,171 @@ if __name__ == "__main__":
       ['Code to a first working model', { dots: 5 }, { dots: 4 }, { dots: 2 }],
     ],
     verdict: 'Start in scikit-learn. Swap in a gradient-boosting library for the last few points of accuracy on tables. Reach for PyTorch when the input is not a table.',
+  },
+  {
+    id: 'cli', title: 'argparse vs click vs typer', lede: 'Building a command-line interface: the standard library, the decorator classic, or type hints.', libs: ['click', 'typer', 'rich'],
+    columns: ['argparse', 'click', 'typer'],
+    rows: [
+      ['In the standard library', true, false, false],
+      ['Defines params with', 'add_argument calls', 'decorators', 'type hints'],
+      ['Nested subcommands', { part: 'subparsers, verbose' }, true, true],
+      ['Prompts, confirmations, passwords', false, true, true],
+      ['Coloured, rich help output', false, { part: 'plain' }, true],
+      ['Shell completion', false, true, true],
+      ['Testing helper', false, { code: 'CliRunner' }, { code: 'CliRunner' }],
+      ['Code for a 3-option command', { dots: 2 }, { dots: 4 }, { dots: 5 }],
+    ],
+    verdict: 'typer for new tools (it is click underneath, so you lose nothing), click when you want explicit decorators or already depend on it, argparse only when adding a dependency is off the table.',
+    snippets: [
+      { title: 'argparse', packages: [], code: `import argparse
+p = argparse.ArgumentParser(prog="greet")
+p.add_argument("name")
+p.add_argument("--times", type=int, default=1)
+p.add_argument("--shout", action="store_true")
+a = p.parse_args(["Ann", "--times", "2", "--shout"])
+for _ in range(a.times):
+    print(("hello " + a.name).upper() if a.shout else "hello " + a.name)` },
+      { title: 'click', packages: ['click'], code: `import click
+from click.testing import CliRunner
+@click.command()
+@click.argument("name")
+@click.option("--times", type=int, default=1)
+@click.option("--shout", is_flag=True)
+def greet(name, times, shout):
+    for _ in range(times):
+        click.echo(("hello " + name).upper() if shout else "hello " + name)
+print(CliRunner().invoke(greet, ["Ann", "--times", "2", "--shout"]).output)` },
+      { title: 'typer', packages: ['pip:typer', 'pip:rich>=13.8', 'click'], code: `import typer
+from typer.testing import CliRunner
+def greet(name: str, times: int = 1, shout: bool = False):
+    for _ in range(times):
+        typer.echo(("hello " + name).upper() if shout else "hello " + name)
+app = typer.Typer(); app.command()(greet)
+print(CliRunner().invoke(app, ["Ann", "--times", "2", "--shout"]).output)` },
+    ],
+  },
+  {
+    id: 'quality', title: 'ruff vs flake8 + black + isort vs mypy', lede: 'What each quality tool actually checks, and which ones overlap.', libs: ['ruff', 'mypy', 'pytest'],
+    columns: ['ruff', 'flake8 + black + isort', 'mypy'],
+    rows: [
+      ['Lint rules (unused imports, bugs, style)', true, { part: 'flake8 + plugins' }, false],
+      ['Formatting', true, { part: 'black' }, false],
+      ['Import sorting', true, { part: 'isort' }, false],
+      ['Auto-fix', true, { part: 'black/isort only' }, false],
+      ['Type checking', false, false, true],
+      ['Speed on a large repo', { dots: 5 }, { dots: 2 }, { dots: 2 }],
+      ['Tools to configure', '1', '3', '1'],
+      ['Written in', 'Rust', 'Python', 'Python (mypyc)'],
+    ],
+    verdict: 'ruff replaces flake8, black and isort in one binary; keep it and add mypy (or pyright) for types. They are complementary, not alternatives.',
+  },
+  {
+    id: 'property-testing', title: 'parametrize vs hypothesis', lede: 'Enumerating the cases you thought of, or letting a strategy search for the ones you did not.', libs: ['pytest', 'hypothesis'],
+    columns: ['pytest.mark.parametrize', 'hypothesis @given'],
+    rows: [
+      ['You write', 'explicit examples', 'a property and a strategy'],
+      ['Finds inputs you did not think of', false, true],
+      ['Deterministic each run', true, { part: 'seeded, with a failure database' }],
+      ['Minimal counterexample on failure', false, true],
+      ['Runtime per test', 'one call per case', 'up to 100 calls (max_examples)'],
+      ['Best for', 'known edge cases, regression tests', 'invariants: round-trips, ordering, idempotence'],
+    ],
+    verdict: 'Use both. Parametrize the cases that must be checked every time; add one property test per invariant that has to hold for all inputs.',
+  },
+  {
+    id: 'deep-learning', title: 'PyTorch vs TensorFlow / Keras vs JAX', lede: 'Three ways to write differentiable numerical programs.', libs: ['pytorch', 'transformers', 'sklearn'],
+    columns: ['PyTorch', 'TensorFlow / Keras', 'JAX'],
+    rows: [
+      ['Programming model', 'eager, define-by-run', 'Keras layers; graph via tf.function', 'pure functions + transforms (grad, jit, vmap)'],
+      ['Research and paper code', { dots: 5 }, { dots: 2 }, { dots: 4 }],
+      ['Hugging Face ecosystem', { dots: 5 }, { dots: 2 }, { dots: 3 }],
+      ['Mobile / edge deployment', { part: 'ExecuTorch' }, { part: 'TF Lite / LiteRT' }, { part: 'via export' }],
+      ['TPU support', { part: 'XLA' }, true, true],
+      ['Beginner-friendly high-level API', { part: 'Lightning' }, true, false],
+      ['Debuggability', { dots: 5 }, { dots: 3 }, { dots: 3 }],
+    ],
+    verdict: 'PyTorch by default: the largest ecosystem and the code you will read on GitHub. Keras when a high-level fit() API is the whole job. JAX for research that leans on function transforms and TPUs.',
+  },
+  {
+    id: 'cloud-sdks', title: 'boto3 vs google-cloud-* vs azure-sdk', lede: 'The official Python SDKs for the three big clouds share ideas but not shapes.', libs: ['boto3', 'googlecloud'],
+    columns: ['boto3 (AWS)', 'google-cloud-* (GCP)', 'azure-* (Azure)'],
+    rows: [
+      ['Packaging', 'one package, every service', 'one package per service', 'one package per service'],
+      ['API generated from service definitions', true, { part: 'gapic, per service' }, { part: 'autorest, per service' }],
+      ['Credential lookup', 'env → config files → instance role', 'ADC: env → gcloud → metadata server', 'DefaultAzureCredential chain'],
+      ['Pagination helper', { code: 'get_paginator' }, 'iterators / pages', { code: 'ItemPaged' }],
+      ['Async client', { part: 'aioboto3 (third party)' }, { part: 'some services' }, true],
+      ['Local testing', 'moto, LocalStack', 'emulators (Pub/Sub, Firestore, Bigtable)', 'Azurite (storage)'],
+      ['Type hints / IDE help', { part: 'boto3-stubs' }, true, true],
+    ],
+    verdict: 'You rarely choose; the cloud does. Learn the credential chain and the pagination idiom of the one you use, and pin SDK versions.',
+  },
+  {
+    id: 'task-queues', title: 'Celery vs RQ vs Dramatiq vs arq', lede: 'Running work outside the request: pick by broker, ecosystem and how much machinery you want.', libs: ['celery', 'redis', 'asyncio'],
+    columns: ['Celery', 'RQ', 'Dramatiq', 'arq'],
+    rows: [
+      ['Brokers', 'RabbitMQ, Redis, SQS, …', 'Redis', 'RabbitMQ, Redis', 'Redis'],
+      ['Async (asyncio) workers', { part: 'partial' }, false, false, true],
+      ['Scheduled / periodic tasks', { part: 'beat' }, { part: 'rq-scheduler' }, { part: 'periodiq' }, true],
+      ['Retries with backoff', true, { part: 'basic' }, true, true],
+      ['Workflows (chains, groups, chords)', true, { part: 'depends_on' }, { part: 'pipelines, groups' }, false],
+      ['Monitoring UI', 'flower', 'rq-dashboard', { part: 'third party' }, false],
+      ['Configuration surface', { dots: 5 }, { dots: 1 }, { dots: 2 }, { dots: 2 }],
+      ['Django integration', { dots: 5 }, { dots: 4 }, { dots: 3 }, { dots: 2 }],
+    ],
+    verdict: 'Celery when you need workflows, many brokers or the Django ecosystem. RQ for the simplest Redis-only setup. Dramatiq for Celery-like reliability with less configuration. arq if the code base is asyncio.',
+  },
+  {
+    id: 'serialization', title: 'json vs orjson vs pickle vs msgpack', lede: 'Turning objects into bytes: readable, fast, Python-only, or compact.', libs: ['json', 'pydantic', 'dataclasses'],
+    columns: ['json', 'orjson', 'pickle', 'msgpack'],
+    rows: [
+      ['In the standard library', true, false, true, false],
+      ['Human readable', true, true, false, false],
+      ['Interoperable with other languages', true, true, false, true],
+      ['Handles datetime / dataclass / numpy natively', false, true, true, false],
+      ['Safe to load untrusted input', true, true, false, true],
+      ['Speed', { dots: 2 }, { dots: 5 }, { dots: 3 }, { dots: 4 }],
+      ['Output size', { dots: 3 }, { dots: 3 }, { dots: 2 }, { dots: 4 }],
+    ],
+    verdict: 'json for APIs and config, orjson when json shows up in a profile, msgpack for compact binary between services you control, pickle only for trusted, same-version Python caches.',
+    snippets: [
+      { title: 'json', packages: [], code: `import json, datetime as dt
+row = {"id": 1, "when": dt.date(2025, 11, 6), "tags": {"a", "b"}}
+print(json.dumps(row, default=lambda o: sorted(o) if isinstance(o, set) else o.isoformat(), indent=1))
+print(json.loads('{"x": 1.5, "y": null}'))` },
+      { title: 'pickle', packages: [], code: `import pickle, datetime as dt
+row = {"id": 1, "when": dt.date(2025, 11, 6), "tags": {"a", "b"}}
+blob = pickle.dumps(row)               # any Python object, no default= needed
+print(len(blob), "bytes;", pickle.loads(blob) == row)
+# never pickle.loads() data you did not produce yourself` },
+    ],
+  },
+  {
+    id: 'dates', title: 'datetime + zoneinfo vs arrow vs pendulum', lede: 'The standard library has caught up; the third-party libraries are now about ergonomics.', libs: ['datetime'],
+    columns: ['datetime + zoneinfo', 'arrow', 'pendulum'],
+    rows: [
+      ['In the standard library', true, false, false],
+      ['IANA time zones', true, true, true],
+      ['Parse ISO 8601', true, true, true],
+      ['Parse arbitrary formats without a spec', false, { part: 'humanize / dehumanize' }, { part: 'parse()' }],
+      ['"3 hours ago" style output', false, true, true],
+      ['Immutable, drop-in datetime subclass', { part: 'datetime is immutable' }, false, true],
+      ['Maintenance activity', { dots: 5 }, { dots: 3 }, { dots: 3 }],
+    ],
+    verdict: 'Start with datetime and zoneinfo; they cover time zones, arithmetic and ISO parsing. Reach for pendulum or arrow only for humanised output or lenient parsing.',
+  },
+  {
+    id: 'containers', title: 'dict vs defaultdict vs Counter vs namedtuple vs dataclass', lede: 'Which standard-library container fits the shape of your data.', libs: ['collections', 'dataclasses'],
+    columns: ['dict', 'defaultdict', 'Counter', 'namedtuple', 'dataclass'],
+    rows: [
+      ['Keys known in advance', false, false, false, true, true],
+      ['Missing key behaviour', 'KeyError', 'factory value', '0', 'n/a', 'n/a'],
+      ['Counting / tallying', { part: 'manual' }, { part: 'int factory' }, true, false, false],
+      ['Attribute access (obj.x)', false, false, false, true, true],
+      ['Mutable', true, true, true, false, { part: 'unless frozen' }],
+      ['Type hints per field', false, false, false, { part: 'NamedTuple class' }, true],
+      ['Memory per instance', { dots: 3 }, { dots: 3 }, { dots: 3 }, { dots: 5 }, { dots: 4 }],
+    ],
+    verdict: 'Counter for tallies, defaultdict for grouping, namedtuple for small immutable records, dataclass for anything with behaviour or many fields, plain dict when keys are data.',
   },
 ];
